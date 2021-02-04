@@ -76,7 +76,7 @@ def main():
     # Display and write to file
     pandas.set_option('display.max_colwidth',100)
     print(stims)
-    stims.to_csv('summary.csv',index=False)
+    stims.to_csv(out_csv,index=False)
 
 
 
