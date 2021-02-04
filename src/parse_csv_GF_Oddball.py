@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Read CSV from eprime_to_csv.py and perform study-specific analysis
-# for GF WM task
+# for GF Oddball task
 
 import argparse
 import pandas
@@ -10,7 +10,7 @@ import os
 def main():
 
     # Parse arguments
-    parser = argparse.ArgumentParser(description='Parse CSV for GF WM task')
+    parser = argparse.ArgumentParser(description='Parse CSV for GF Oddball task')
     parser.add_argument('-o', '--outdir', help='Path to store the output summary CSV')
     parser.add_argument('eprime_csv', help='CSV file from eprime_to_csv.py', metavar='EPRIME_CSV')
     args = parser.parse_args()
