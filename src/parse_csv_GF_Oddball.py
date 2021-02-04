@@ -67,7 +67,7 @@ def main():
         stim_durs = round( stim_durs / 1000, 1)
         stims.DurationsSec[s]  = list(stim_durs)
         
-        # Only the oddball trials have responses reecorded
+        # Only the oddball trials have responses recorded
         if stim.Condition=='Oddball':
             
             stims.RTms[s] = list(round(info.loc[inds,'MainScreen.RT']))
