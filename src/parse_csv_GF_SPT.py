@@ -29,7 +29,7 @@ def main():
     start_trigger_idx = edat.loc[:,'Instructions.RTTime'].idxmin()
     start_time = edat.loc[start_trigger_idx,'Instructions.RTTime']
 
-    # Times for each stimulus, removing rows with empty StimType
+    # Times for each stimulus, removing rows with empty ImageType
     info = edat.loc[edat.ImageType.notna(),
         ('ImageType','bbcolor','PresentPicture.OnsetTime','PresentPicture.RT','PresentPicture.ACC')]
 
