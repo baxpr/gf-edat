@@ -63,7 +63,7 @@ def main():
         stims.OnsetsSec[s] = list(stim_times)
     
         # Assume event durations are constant - hard coded rather than from eprime.txt
-        stims.DurationsSec[s] = [2.0 for x in range(len(stims.OnsetsSec[s]))]
+        stims.DurationsSec[s] = [2.5 for x in range(len(stims.OnsetsSec[s]))]
     
         stims.RTms[s] = list(round(info.loc[inds,'Stim.RT']))
         stims.MeanCorrectRTms[s] = round(info.loc[inds_correct,'Stim.RT'].mean())
