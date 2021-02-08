@@ -11,7 +11,7 @@ def main():
 
     # Parse arguments
     parser = argparse.ArgumentParser(description='Parse CSV for GF SPT task')
-    parser.add_argument('-o', '--outdir', help='Path to store the output summary CSV')
+    parser.add_argument('-o', '--outcsv', help='Path to store the output summary CSV')
     parser.add_argument('eprime_csv', help='CSV file from eprime_to_csv.py', metavar='EPRIME_CSV')
     args = parser.parse_args()
 

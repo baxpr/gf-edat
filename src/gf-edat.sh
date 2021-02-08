@@ -46,22 +46,26 @@ esac
 
 
 # Convert E-Prime's .txt to a table format CSV file
+echo Converting to CSV: "${eprime_txt}"
 eprime_csv="${out_dir}"/eprime.csv
 ${src_dir}/eprime_to_csv.py --outcsv "${eprime_csv}" "${eprime_txt}"
 
 # Parse for the specific task (Oddball, WM, SPT)
+echo Parsing: "${eprime_csv}"
 summary_csv="${out_dir}"/eprime_summary_${task}.csv
 "${src_dir}"/parse_csv_GF_${task}.py --outcsv "${summary_csv}" "${eprime_csv}"
 
 # Create PDF
+echo Creating PDF
 summary_pdf="${out_dir}"/eprime_summary.pdf
 "${src_dir}"/make_pdf.py  --incsv "${summary_csv}" --outpdf "${summary_pdf}" \
 	--project "${project}" --subject "${subject}" --session "${session}" --scan "${scan}" \
 	--task "${task}"
 
 # Organize files into dirs so we don't need to know the filenames for the yaml
-mkdir "${out_dir}"/EPRIME_CSV
+echo Organizing outputs
+mkdir -p "${out_dir}"/EPRIME_CSV
 mv "${eprime_csv}" "${out_dir}"/EPRIME_CSV
-mkdir "${out_dir}"/SUMMARY_CSV
+mkdir -p "${out_dir}"/SUMMARY_CSV
 mv "${summary_csv}" "${out_dir}"/SUMMARY_CSV
 
