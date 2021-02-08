@@ -16,11 +16,10 @@ def main():
     args = parser.parse_args()
 
     # Generate output CSV path+filename
-    out_csv = os.path.basename(args.eprime_csv).replace('.csv','_summary.csv')    
-    if args.outdir is None:
-        out_csv = os.path.join(os.path.dirname(args.eprime_csv),out_csv)
+    if args.outcsv is None:
+        out_csv = os.path.basename(args.eprime_csv).replace('.csv','_summary.csv')
     else:
-        out_csv = os.path.join(args.outdir,out_csv)
+        out_csv = args.outcsv
     
     # Read in CSV
     edat = pandas.read_csv(args.eprime_csv)
@@ -74,13 +73,7 @@ def main():
             stims.MedianCorrectRTms[s] = round(info.loc[inds_correct,'PresentPicture.RT'].median())
 
 
-    # Display and write to file
-    pandas.set_option('display.max_colwidth',100)
-    print(stims.loc[:,('Condition','PctAccuracy','MeanCorrectRTms','MedianCorrectRTms')])
-    print(stims.loc[:,('Condition','OnsetsSec')])
-    print(stims.loc[:,('Condition','DurationsSec')])
-    print(stims.loc[:,('Condition','Accuracy')])
-    print(stims.loc[:,('Condition','RTms')])
+    # Write to file
     stims.to_csv(out_csv,index=False)
 
 

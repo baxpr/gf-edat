@@ -16,11 +16,10 @@ def main():
     args = parser.parse_args()
 
     # Generate output CSV path+filename
-    out_csv = os.path.basename(args.eprime_csv).replace('.csv','_summary.csv')    
-    if args.outdir is None:
-        out_csv = os.path.join(os.path.dirname(args.eprime_csv),out_csv)
+    if args.outcsv is None:
+        out_csv = os.path.basename(args.eprime_csv).replace('.csv','_summary.csv')
     else:
-        out_csv = os.path.join(args.outdir,out_csv)
+        out_csv = args.outcsv
     
     # Read in CSV
     edat = pandas.read_csv(args.eprime_csv)
@@ -78,9 +77,7 @@ def main():
             stims.PctAccuracy[s] = round( 100 * info.loc[inds,'MainScreen.ACC'].mean(), 1)
 
 
-    # Display and write to file
-    pandas.set_option('display.max_colwidth',100)
-    print(stims)
+    # Write to file
     stims.to_csv(out_csv,index=False)
 
 

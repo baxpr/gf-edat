@@ -12,17 +12,17 @@ def main():
 
     # Parse arguments
     parser = argparse.ArgumentParser(description='Parse E-Prime text output and create CSV')
-    parser.add_argument('-o', '--outdir', help='Path to store the output CSV')
+    parser.add_argument('-o', '--outcsv', help='File to store the output CSV')
     parser.add_argument('eprime_txt', help='E-Prime txt file', metavar='EPRIME_TXT')
     args = parser.parse_args()
 
     # Generate output CSV path+filename
-    out_csv = os.path.basename(args.eprime_txt).replace('.txt','.csv')    
-    if args.outdir is None:
-        out_csv = os.path.join(os.path.dirname(args.eprime_txt),out_csv)
+    if args.outcsv is None:
+        # https://stackoverflow.com/a/59082116
+        out_csv = '.csv'.join(args.eprime_txt.rsplit('.txt',1))
     else:
-        out_csv = os.path.join(args.outdir,out_csv)
-    
+        out_csv = args.outcsv
+
     # Read entire file into a string, eliminating nulls
     with open(args.eprime_txt,encoding='utf-16') as f:
         txt = f.read().replace(u'\x00','')
