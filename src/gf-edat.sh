@@ -4,6 +4,8 @@
 export project=NO_PROJ
 export subject=NO_SUBJ
 export session=NO_SESS
+export scan=NO_SCAN
+export task=UNSPECIFIED
 export src_dir=/opt/gf-edat/src
 
 # Parse options
@@ -32,6 +34,17 @@ do
 	esac
 done
 
+# Verify the specified task is in the list we can handle
+case "${task}" in
+	Oddball|SPT|WM)
+		;;
+	*)
+		echo Unknown task "${task}"
+		exit 1
+		;;
+esac
+
+
 # Convert E-Prime's .txt to a table format CSV file
 eprime_csv="${out_dir}"/eprime.csv
 ${src_dir}/eprime_to_csv.py --outcsv "${eprime_csv}" "${eprime_txt}"
@@ -42,12 +55,9 @@ summary_csv="${out_dir}"/eprime_summary_${task}.csv
 
 # Create PDF
 summary_pdf="${out_dir}"/eprime_summary.pdf
-python -c 'from fpdf import FPDF; pdf = FPDF(); pdf.add_page(); pdf.set_font("Courier", size = 9);
-f = open("'$TEXTFILE'", "r",encoding="latin-1");
-for line in f:
-	x = line.encode("latin1","ignore").decode("latin1")
-	pdf.multi_cell(193, 5, txt = x);
-pdf.output("'$PDFFILE'")'
+"${src_dir}"/make_pdf.py  --incsv "${summary_csv}" --outpdf "${summary_pdf}" \
+	--project "${project}" --subject "${subject}" --session "${session}" --scan "${scan}" \
+	--task "${task}"
 
 # Organize files into dirs so we don't need to know the filenames for the yaml
 mkdir "${out_dir}"/EPRIME_CSV
