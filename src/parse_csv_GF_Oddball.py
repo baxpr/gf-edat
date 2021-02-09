@@ -67,14 +67,14 @@ def main():
         stims.DurationsSec[s]  = list(stim_durs)
         
         # Only the oddball trials have responses recorded
-        #if stim.Condition=='Oddball':
-        #    
-        #    stims.RTms[s] = list(round(info.loc[inds,'MainScreen.RT']))
-        #    stims.MeanCorrectRTms[s] = round(info.loc[inds_correct,'MainScreen.RT'].mean())
-        #    stims.MedianCorrectRTms[s] = round(info.loc[inds_correct,'MainScreen.RT'].median())
-        #
-        #    stims.Accuracy[s] = list(info.loc[inds,'MainScreen.ACC'].astype(int))
-        #    stims.PctAccuracy[s] = round( 100 * info.loc[inds,'MainScreen.ACC'].mean(), 1)
+        if stim.Condition=='Oddball':
+            
+            stims.RTms[s] = list(round(info.loc[inds,'MainScreen.RT']))
+            stims.MeanCorrectRTms[s] = round(info.loc[inds_correct,'MainScreen.RT'].mean())
+            stims.MedianCorrectRTms[s] = round(info.loc[inds_correct,'MainScreen.RT'].median())
+        
+            stims.Accuracy[s] = list(info.loc[inds,'MainScreen.ACC'].astype(int))
+            stims.PctAccuracy[s] = round( 100 * info.loc[inds,'MainScreen.ACC'].mean(), 1)
 
 
     # Write to file

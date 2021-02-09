@@ -1,6 +1,7 @@
 Bootstrap: docker
 From: ubuntu:20.04
 
+
 %help
   Extract reaction time, accuracy, stimulus timing from E-Prime
   test files for a few specific tasks.
@@ -20,15 +21,18 @@ From: ubuntu:20.04
 
 
 %post
-  apt-get update
+  apt update
+
+  # Install python3 with pip and use by default
+  # https://stackoverflow.com/a/61878185
+  apt install -y python3 python3-pip python-is-python3
+  pip3 install pandas fpdf
 
   # Create input/output directories for binding
   mkdir /INPUTS && mkdir /OUTPUTS
 
 
 %environment
-  
-  # Path
   export PATH=/opt/gf-edat/src:${PATH}
 
 
