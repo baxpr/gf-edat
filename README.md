@@ -25,6 +25,6 @@ eprime_txt                        Path to E-Prime's .txt log file
 ```
 eprime_summary.pdf    Text report for viewing
 EPRIME_CSV            E-Prime log converted to csv/spreadsheet format
-SUMMARY_CSV           List of task/stimulus conditions with RT, 
-                          accuracy, onsets, durations
+SUMMARY_CSV           List of task/stimulus conditions with RT, accuracy,
+                         onsets, durations
 ```
