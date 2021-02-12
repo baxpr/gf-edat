@@ -3,6 +3,9 @@
 # Given the name of an E-PRIME .txt output file, parse the filename and upload the file
 # to the appropriate EPRIME_TXT resource on XNAT. Specific to the three GF tasks.
 #
+# Requires a python 3 installation and DAX:
+#    https://dax.readthedocs.io/en/latest/installing_dax_in_a_virtual_environment.html
+#
 #
 # How filenames are parsed - bits marked with ^ are extracted.
 # 
