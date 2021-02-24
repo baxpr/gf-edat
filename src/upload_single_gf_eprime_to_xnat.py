@@ -66,7 +66,7 @@ print('Subject: %s' % subject)
 print('Run:     %s' % run)
 print('Task:    %s' % task)
 
-# Find the usable scan with appropriate label and verify there's only one
+# Figure out the expected scan label prefix
 #
 # wm1*
 # wm2*
@@ -75,13 +75,13 @@ print('Task:    %s' % task)
 # spt1*
 scan_prefix = '%s%s' % (task.lower(),run)
 
-
+# Connect to XNAT and upload
 with dax.XnatUtils.get_interface() as xnat:
     
-    # List of scans
+    # Get list of scans in this session
     scans = xnat.get_scans(project,session,subject)
 
-    # Find scan(s) where scan_prefix matches scans['scan_label']
+    # Find scan(s) where scan_prefix matches scans['scan_type']
     match = [x for x in scans if x['scan_type'].startswith(scan_prefix)]
     
     # If length of matches isn't 1 warn and skip upload
