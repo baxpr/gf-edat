@@ -44,16 +44,27 @@ import argparse
 parser = argparse.ArgumentParser(description='Upload an E-Prime .txt to XNAT')
 parser.add_argument('--eprime_txt', help='E-Prime .txt filename',required=True)
 parser.add_argument('--project', help='XNAT project',required=True)
-parser.add_argument('--overwrite', help='Force overwrite if existing',default=False)
+parser.add_argument('--overwrite', help='Force overwrite if existing',default='False')
 args = parser.parse_args()
 
 expr = re.compile('^(?P<task>.*?)-(?P<session>.*?)-(?P<run>\d).*\.txt$')
-r = expr.match(os.path.basename(args.eprime_txt))
 
-print(args.project)
-print(r.group('session'))
-print(r.group('run'))
-print(r.group('task'))
+project = args.project
+overwrite = args.overwrite
+eprime_txt = args.eprime_txt
+
+r = expr.match(os.path.basename(eprime_txt))
+
+session = r.group('session')
+subject = r.group('session')
+run = r.group('run')
+task = r.group('task')
+
+print('Project: %s' % project)
+print('Session: %s' % session)
+print('Subject: %s' % subject)
+print('Run:     %s' % run)
+print('Task:    %s' % task)
 
 # Find the usable scan with appropriate label and verify there's only one
 #
@@ -62,22 +73,31 @@ print(r.group('task'))
 # oddball1*
 # oddball2*
 # spt1*
-scan_prefix = '%s%s' % (r.group('task').lower(),r.group('run'))
-print(scan_prefix)
+scan_prefix = '%s%s' % (task.lower(),run)
 
 
 with dax.XnatUtils.get_interface() as xnat:
     
     # List of scans
-    scans = xnat.get_scans(args.project,r.group('session'),r.group('session'))
+    scans = xnat.get_scans(project,session,subject)
 
     # Find scan(s) where scan_prefix matches scans['scan_label']
+    match = [x for x in scans if x['scan_type'].startswith(scan_prefix)]
     
     # If length of matches isn't 1 warn and skip upload
-    
+    if len(match) != 1:
+        raise Exception('Wrong number of scans matched (%d)' % len(match))
+    else:
+        match = match[0]
+        print('Found single scan %s matching \'%s\'' % (match['scan_id'],scan_prefix))
+        
     # If scan has resource warn and skip upload unless overwrite
-    
-    # Upload with overwrite set correctly
-    
-    
-print(scans)
+    rsrc = xnat.select_scan_resource(project,session,subject,match['scan_id'],'EPRIME_TXT')
+    if rsrc.exists() and not (overwrite.lower()=='true'):
+        print('WARNING: EPRIME_TXT resource exists, skipping')
+    else:
+        if not rsrc.exists():
+            rsrc.create()
+        rsrc.put([eprime_txt],overwrite=True)
+        print('Uploaded %s' % eprime_txt)
+
