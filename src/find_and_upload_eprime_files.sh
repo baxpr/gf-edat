@@ -10,6 +10,9 @@
 # on XNAT based on the filename. By default, upload will be skipped if the resource
 # already exists on XNAT.
 #
+# This must be run in a python environment where DAX is installed:
+# https://dax.readthedocs.io/en/latest/installing_dax_in_a_virtual_environment.html
+#
 # Usage:
 #
 #    find_and_upload_eprime_files.sh --project <XNAT_project> --dir <directory>
@@ -22,6 +25,7 @@
 # these files exist:
 #    This one                 find_and_upload_eprime_files.sh
 #    Python upload script     upload_single_gf_eprime_to_xnat.py
+
 
 # Defaults
 project=GenFac_HWZ
