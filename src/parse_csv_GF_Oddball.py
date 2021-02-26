@@ -24,21 +24,22 @@ def main():
     # Read in CSV
     edat = pandas.read_csv(args.eprime_csv)
 
-    # Use the onset of trigger item as start time
-    start_trigger_idx = edat.loc[:,'scanstart2.OnsetTime'].idxmin()
-    start_time = edat.loc[start_trigger_idx,'scanstart2.OnsetTime']
+    # Use the offset of trigger item as start time
+    start_trigger_idx = edat.loc[:,'Start1.OffsetTime'].idxmin()
+    start_time = edat.loc[start_trigger_idx,'Start1.OffsetTime']
 
     # Times for each stimulus, keeping only rows marked MainStimuli
-    info = edat.loc[edat.Running=='MainStimuli',
-        ('Running','duration','tone','MainScreen.OnsetTime','MainScreen.RT','MainScreen.ACC')]
+    info = edat.loc[(edat.Procedure=='StandardProc') | (edat.Procedure=='DeviantProc'),
+        ('Procedure','StandardTone.OnsetTime','StandardTone.RT','StandardTone.ACC',
+        'DeviantTone.OnsetTime','DeviantTone.RT','DeviantTone.ACC')]
 
     # Unique stimulus types
     info['Condition'] = ['' for x in range(info.index.size)]
-    info.loc[info.tone=='stimuli\\silence.wav','Condition'] = 'Silence'
-    info.loc[info.tone=='stimuli\\1000.wav','Condition'] = 'Tone'
-    info.loc[info.tone=='stimuli\\1200.wav','Condition'] = 'Oddball'
+    info.loc[info.Procedure=='StandardProc','Condition'] = 'Standard'
+    info.loc[info.Procedure=='DeviantProc','Condition'] = 'Deviant'
 
-    stims = info.loc[:,('Running','Condition')].drop_duplicates().reset_index(drop=True)
+    stims = info.loc[:,('Procedure','Condition')].drop_duplicates().reset_index(drop=True)
+
 
     # Initialize various things
     stims['OnsetsSec'] = [() for x in range(stims.index.size)]
@@ -56,25 +57,19 @@ def main():
 
         stim = stims.iloc[s,:]
         inds = (info.Condition==stim.Condition)
-        inds_correct = (info.Condition==stim.Condition) & (info.loc[:,'MainScreen.ACC']==1)
+        inds_correct = (info.Condition==stim.Condition) & (info.loc[:,stim.Condition+'Tone.ACC']==1)
 
-        stim_times = info.loc[inds,'MainScreen.OnsetTime']
+        stim_times = info.loc[inds,stim.Condition+'Tone.OnsetTime']
         stim_times = round( (stim_times - start_time) / 1000, 1)
         stims.OnsetsSec[s] = list(stim_times)
-
-        stim_durs = info.loc[inds,'duration']
-        stim_durs = round( stim_durs / 1000, 1)
-        stims.DurationsSec[s]  = list(stim_durs)
-        
-        # Only the oddball trials have responses recorded
-        if stim.Condition=='Oddball':
+        stims.DurationsSec[s]  = [0.5 for x in range(len(stims.OnsetsSec[s]))]
             
-            stims.RTms[s] = list(round(info.loc[inds,'MainScreen.RT']))
-            stims.MeanCorrectRTms[s] = round(info.loc[inds_correct,'MainScreen.RT'].mean())
-            stims.MedianCorrectRTms[s] = round(info.loc[inds_correct,'MainScreen.RT'].median())
+        stims.RTms[s] = list(round(info.loc[inds,stim.Condition+'Tone.RT']))
+        stims.MeanCorrectRTms[s] = round(info.loc[inds_correct,stim.Condition+'Tone.RT'].mean())
+        stims.MedianCorrectRTms[s] = round(info.loc[inds_correct,stim.Condition+'Tone.RT'].median())
         
-            stims.Accuracy[s] = list(info.loc[inds,'MainScreen.ACC'].astype(int))
-            stims.PctAccuracy[s] = round( 100 * info.loc[inds,'MainScreen.ACC'].mean(), 1)
+        stims.Accuracy[s] = list(info.loc[inds,stim.Condition+'Tone.ACC'].astype(int))
+        stims.PctAccuracy[s] = round( 100 * info.loc[inds,stim.Condition+'Tone.ACC'].mean(), 1)
 
 
     # Write to file
