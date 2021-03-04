@@ -45,6 +45,8 @@ def main():
     stims['RTms'] = [() for x in range(stims.index.size)]
     stims['MeanCorrectRTms'] = [() for x in range(stims.index.size)]
     stims['MedianCorrectRTms'] = [() for x in range(stims.index.size)]
+    stims['MinCorrectRTms'] = [() for x in range(stims.index.size)]
+    stims['MaxCorrectRTms'] = [() for x in range(stims.index.size)]
 
     # For each stimulus, a list of onset times. We subtract the start time and convert to sec.
     # Also compute accuracy and RT.
@@ -71,6 +73,8 @@ def main():
             stims.RTms[s] = list(round(info.loc[inds,'PresentPicture.RT']))
             stims.MeanCorrectRTms[s] = round(info.loc[inds_correct,'PresentPicture.RT'].mean())
             stims.MedianCorrectRTms[s] = round(info.loc[inds_correct,'PresentPicture.RT'].median())
+            stims.MinCorrectRTms[s] = round(info.loc[inds_correct,'PresentPicture.RT'].min())
+            stims.MaxCorrectRTms[s] = round(info.loc[inds_correct,'PresentPicture.RT'].max())
 
 
     # Write to file

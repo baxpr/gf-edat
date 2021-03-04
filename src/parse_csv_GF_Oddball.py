@@ -49,6 +49,8 @@ def main():
     stims['RTms'] = [() for x in range(stims.index.size)]
     stims['MeanCorrectRTms'] = [() for x in range(stims.index.size)]
     stims['MedianCorrectRTms'] = [() for x in range(stims.index.size)]
+    stims['MinCorrectRTms'] = [() for x in range(stims.index.size)]
+    stims['MaxCorrectRTms'] = [() for x in range(stims.index.size)]
 
     
     # For each stimulus, a list of onset times. We subtract the start time and convert to sec.
@@ -67,6 +69,8 @@ def main():
         stims.RTms[s] = list(round(info.loc[inds,stim.Condition+'Tone.RT']))
         stims.MeanCorrectRTms[s] = round(info.loc[inds_correct,stim.Condition+'Tone.RT'].mean())
         stims.MedianCorrectRTms[s] = round(info.loc[inds_correct,stim.Condition+'Tone.RT'].median())
+        stims.MinCorrectRTms[s] = round(info.loc[inds_correct,stim.Condition+'Tone.RT'].min())
+        stims.MaxCorrectRTms[s] = round(info.loc[inds_correct,stim.Condition+'Tone.RT'].max())
         
         stims.Accuracy[s] = list(info.loc[inds,stim.Condition+'Tone.ACC'].astype(int))
         stims.PctAccuracy[s] = round( 100 * info.loc[inds,stim.Condition+'Tone.ACC'].mean(), 1)
