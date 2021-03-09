@@ -82,6 +82,6 @@ echo "Uploading from ${dir} to ${project}"
 # https://stackoverflow.com/a/8677566
 while IFS= read -r -d $'\0' file; do
 	echo Uploading $file
-	"${upload_cmd}" --eprime_txt "${file}" --project "${project}" --overwite "${overwrite}"
+	"${upload_cmd}" --eprime_txt "${file}" --project "${project}" --overwrite "${overwrite}"
 done < <(find "${dir}" \( -name Oddball-*.txt -or -name SPT-*.txt -or -name WM-*.txt \) -print0)
 
