@@ -48,7 +48,7 @@ parser.add_argument('--project', help='XNAT project',required=True)
 parser.add_argument('--overwrite', help='Force overwrite if existing',default='False')
 args = parser.parse_args()
 
-expr = re.compile('^(?P<task>.*?)-(?P<session>.*?)-(?P<run>\d).*\.txt$')
+expr = re.compile('^(?P<task>.*?)-(?P<session>.*?)-(?P<run>\d)\S*\.txt$')
 
 project = args.project
 overwrite = args.overwrite
