@@ -17,6 +17,11 @@
 #
 #    find_and_upload_eprime_files.sh --project <XNAT_project> --dir <directory>
 #
+# Optionally, to overwrite existing resources,
+#
+#    find_and_upload_eprime_files.sh --project <XNAT_project> --dir <directory> --overwrite True
+#
+#
 # The --project option defaults to GenFac_HWZ if not specified. The --dir option 
 # is required.
 #
@@ -29,6 +34,7 @@
 
 # Defaults
 project=GenFac_HWZ
+overwrite=False
 dir=
 
 # Parse inputs
@@ -40,6 +46,8 @@ do
 			project="$2"; shift; shift ;;
 		--dir)
 			dir="$2"; shift; shift ;;
+		--overwrite)
+			overwrite="$2"; shift; shift ;;
 		*)
 			echo "Ignoring unknown input ${1}"; shift ;;
 	esac
@@ -74,6 +82,6 @@ echo "Uploading from ${dir} to ${project}"
 # https://stackoverflow.com/a/8677566
 while IFS= read -r -d $'\0' file; do
 	echo Uploading $file
-	"${upload_cmd}" --eprime_txt "${file}" --project "${project}"
+	"${upload_cmd}" --eprime_txt "${file}" --project "${project}" --overwite "${overwrite}"
 done < <(find "${dir}" \( -name Oddball-*.txt -or -name SPT-*.txt -or -name WM-*.txt \) -print0)
 
