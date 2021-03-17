@@ -36,7 +36,7 @@ done
 
 # Verify the specified task is in the list we can handle
 case "${task}" in
-	Oddball|SPT|WM)
+	Oddball|OddballOld|SPT|WM)
 		;;
 	*)
 		echo Unknown task "${task}"
