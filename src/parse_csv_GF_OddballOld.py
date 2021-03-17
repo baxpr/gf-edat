@@ -61,6 +61,10 @@ def main():
         inds = (info.Condition==stim.Condition)
         inds_correct = (info.Condition==stim.Condition) & (info.loc[:,'MainScreen.ACC']==1)
 
+        stim_times = info.loc[inds,'MainScreen.OnsetTime']
+        stim_times = round( (stim_times - start_time) / 1000, 1)
+        stims.OnsetsSec[s] = list(stim_times)
+        
         stim_durs = info.loc[inds,'duration']
         stim_durs = round( stim_durs / 1000, 1)
         stims.DurationsSec[s]  = list(stim_durs)
