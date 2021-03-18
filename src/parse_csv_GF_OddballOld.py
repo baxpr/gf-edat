@@ -37,9 +37,17 @@ def main():
     info.loc[info.tone=='stimuli\\silence.wav','Condition'] = 'Silence'
     info.loc[info.tone=='stimuli\\1000.wav','Condition'] = 'Tone'
     info.loc[info.tone=='stimuli\\1200.wav','Condition'] = 'Oddball'
+    
+    # Remove Silence condition
+    info = info.loc[info['Condition'] != 'Silence',:]
+
+    # Rename conditions to new names
+    info.loc[info['Condition']=='Oddball', 'Condition'] = 'Deviant'
+    info.loc[info['Condition']=='Tone', 'Condition'] = 'Standard'
 
     stims = info.loc[:,('Running','Condition')].drop_duplicates().reset_index(drop=True)
 
+    print(stims)
 
     # Initialize various things
     stims['OnsetsSec'] = [() for x in range(stims.index.size)]
@@ -70,7 +78,7 @@ def main():
         stims.DurationsSec[s]  = list(stim_durs)
 
         # Only the oddball trials have responses recorded
-        if stim.Condition=='Oddball':
+        if stim.Condition=='Deviant':
             stims.RTms[s] = list(round(info.loc[inds,'MainScreen.RT']))
             stims.MeanCorrectRTms[s] = round(info.loc[inds_correct,'MainScreen.RT'].mean())
             stims.MedianCorrectRTms[s] = round(info.loc[inds_correct,'MainScreen.RT'].median())
