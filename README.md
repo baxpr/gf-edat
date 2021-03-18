@@ -17,7 +17,7 @@ singularity run --contain --cleanenv \
 ## Inputs
 ```
 project, subject, session, scan   XNAT-specific info for report if desired
-task                              Oddball, SPT, or WM
+task                              Oddball, OddballOld, SPT, or WM
 eprime_txt                        Path to E-Prime's .txt log file
 ```
 
