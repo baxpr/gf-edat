@@ -67,10 +67,10 @@ def main():
         stims.DurationsSec[s]  = [0.5 for x in range(len(stims.OnsetsSec[s]))]
             
         stims.RTms[s] = list(round(info.loc[inds,stim.Condition+'Tone.RT']))
-        stims.MeanCorrectRTms[s] = round(info.loc[inds_correct,stim.Condition+'Tone.RT'].mean())
-        stims.MedianCorrectRTms[s] = round(info.loc[inds_correct,stim.Condition+'Tone.RT'].median())
-        stims.MinCorrectRTms[s] = round(info.loc[inds_correct,stim.Condition+'Tone.RT'].min())
-        stims.MaxCorrectRTms[s] = round(info.loc[inds_correct,stim.Condition+'Tone.RT'].max())
+        stims.MeanCorrectRTms[s] = round(info.loc[inds_correct,stim.Condition+'Tone.RT'].mean(), 0)
+        stims.MedianCorrectRTms[s] = round(info.loc[inds_correct,stim.Condition+'Tone.RT'].median(), 0)
+        stims.MinCorrectRTms[s] = round(info.loc[inds_correct,stim.Condition+'Tone.RT'].min(), 0)
+        stims.MaxCorrectRTms[s] = round(info.loc[inds_correct,stim.Condition+'Tone.RT'].max(), 0)
         
         stims.Accuracy[s] = list(info.loc[inds,stim.Condition+'Tone.ACC'].astype(int))
         stims.PctAccuracy[s] = round( 100 * info.loc[inds,stim.Condition+'Tone.ACC'].mean(), 1)

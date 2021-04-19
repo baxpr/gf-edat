@@ -70,11 +70,11 @@ def main():
 
         # Only have RTs for target trials
         if stim.bbcolor=='red':
-            stims.RTms[s] = list(round(info.loc[inds,'PresentPicture.RT']))
-            stims.MeanCorrectRTms[s] = round(info.loc[inds_correct,'PresentPicture.RT'].mean())
-            stims.MedianCorrectRTms[s] = round(info.loc[inds_correct,'PresentPicture.RT'].median())
-            stims.MinCorrectRTms[s] = round(info.loc[inds_correct,'PresentPicture.RT'].min())
-            stims.MaxCorrectRTms[s] = round(info.loc[inds_correct,'PresentPicture.RT'].max())
+            stims.RTms[s] = list(round(info.loc[inds,'PresentPicture.RT'], 0))
+            stims.MeanCorrectRTms[s] = round(info.loc[inds_correct,'PresentPicture.RT'].mean(), 0)
+            stims.MedianCorrectRTms[s] = round(info.loc[inds_correct,'PresentPicture.RT'].median(), 0)
+            stims.MinCorrectRTms[s] = round(info.loc[inds_correct,'PresentPicture.RT'].min(), 0)
+            stims.MaxCorrectRTms[s] = round(info.loc[inds_correct,'PresentPicture.RT'].max(), 0)
 
 
     # Write to file

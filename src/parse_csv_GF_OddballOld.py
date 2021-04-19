@@ -80,10 +80,10 @@ def main():
         # Only the oddball trials have responses recorded
         if stim.Condition=='Deviant':
             stims.RTms[s] = list(round(info.loc[inds,'MainScreen.RT']))
-            stims.MeanCorrectRTms[s] = round(info.loc[inds_correct,'MainScreen.RT'].mean())
-            stims.MedianCorrectRTms[s] = round(info.loc[inds_correct,'MainScreen.RT'].median())
-            stims.MinCorrectRTms[s] = round(info.loc[inds_correct,'MainScreen.RT'].min())
-            stims.MaxCorrectRTms[s] = round(info.loc[inds_correct,'MainScreen.RT'].max())
+            stims.MeanCorrectRTms[s] = round(info.loc[inds_correct,'MainScreen.RT'].mean(), 0)
+            stims.MedianCorrectRTms[s] = round(info.loc[inds_correct,'MainScreen.RT'].median(), 0)
+            stims.MinCorrectRTms[s] = round(info.loc[inds_correct,'MainScreen.RT'].min(), 0)
+            stims.MaxCorrectRTms[s] = round(info.loc[inds_correct,'MainScreen.RT'].max(), 0)
 
             stims.Accuracy[s] = list(info.loc[inds,'MainScreen.ACC'].astype(int))
             stims.PctAccuracy[s] = round( 100 * info.loc[inds,'MainScreen.ACC'].mean(), 1)

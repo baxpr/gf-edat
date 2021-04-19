@@ -66,11 +66,11 @@ def main():
         # Assume event durations are constant - hard coded rather than from eprime.txt
         stims.DurationsSec[s] = [2.5 for x in range(len(stims.OnsetsSec[s]))]
     
-        stims.RTms[s] = list(round(info.loc[inds,'Stim.RT']))
-        stims.MeanCorrectRTms[s] = round(info.loc[inds_correct,'Stim.RT'].mean())
-        stims.MedianCorrectRTms[s] = round(info.loc[inds_correct,'Stim.RT'].median())
-        stims.MinCorrectRTms[s] = round(info.loc[inds_correct,'Stim.RT'].min())
-        stims.MaxCorrectRTms[s] = round(info.loc[inds_correct,'Stim.RT'].max())
+        stims.RTms[s] = list(round(info.loc[inds,'Stim.RT'], 0))
+        stims.MeanCorrectRTms[s] = round(info.loc[inds_correct,'Stim.RT'].mean(), 0)
+        stims.MedianCorrectRTms[s] = round(info.loc[inds_correct,'Stim.RT'].median(), 0)
+        stims.MinCorrectRTms[s] = round(info.loc[inds_correct,'Stim.RT'].min(), 0)
+        stims.MaxCorrectRTms[s] = round(info.loc[inds_correct,'Stim.RT'].max(), 0)
 
         stims.Accuracy[s] = list(info.loc[inds,'Stim.ACC'].astype(int))
         stims.PctAccuracy[s] = 100 * info.loc[inds,'Stim.ACC'].mean()
