@@ -97,3 +97,4 @@ while IFS= read -r -d $'\0' file; do
 	"${upload_cmd}" --eprime_txt "${file}" --project "${project}" --overwrite "${overwrite}"
 done < <(find "${dir}" ${daybit} \( -name Oddball-*.txt -or -name SPT-*.txt -or -name WM-*.txt \) -print0)
 
+echo Done.
