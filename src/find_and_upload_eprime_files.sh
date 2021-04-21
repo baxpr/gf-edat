@@ -17,9 +17,11 @@
 #
 #    find_and_upload_eprime_files.sh --project <XNAT_project> --dir <directory>
 #
-# Optionally, to overwrite existing resources,
+# Optionally, to limit the file search to the past N days, use
+#        --days N
 #
-#    find_and_upload_eprime_files.sh --project <XNAT_project> --dir <directory> --overwrite True
+# Optionally, to overwrite existing resources, use
+#        --overwrite True
 #
 #
 # The --project option defaults to GenFac_HWZ if not specified. The --dir option 
@@ -36,6 +38,7 @@
 project=GenFac_HWZ
 overwrite=False
 dir=
+days=all
 
 # Parse inputs
 while [[ $# -gt 0 ]]
@@ -48,6 +51,8 @@ do
 			dir="$2"; shift; shift ;;
 		--overwrite)
 			overwrite="$2"; shift; shift ;;
+		--days)
+			days="$2"; shift; shift ;;
 		*)
 			echo "Ignoring unknown input ${1}"; shift ;;
 	esac
@@ -78,10 +83,17 @@ fi
 # Info
 echo "Uploading from ${dir} to ${project}"
 
+# Create days option
+if [[ days == "all" ]]; then
+	daybit=""
+else
+	daybit="-mtime -$days"
+fi
+
 # Find all relevant .txt files in dir and upload each one
 # https://stackoverflow.com/a/8677566
 while IFS= read -r -d $'\0' file; do
 	echo Uploading $file
 	"${upload_cmd}" --eprime_txt "${file}" --project "${project}" --overwrite "${overwrite}"
-done < <(find "${dir}" \( -name Oddball-*.txt -or -name SPT-*.txt -or -name WM-*.txt \) -print0)
+done < <(find "${dir}" ${daybit} \( -name Oddball-*.txt -or -name SPT-*.txt -or -name WM-*.txt \) -print0)
 

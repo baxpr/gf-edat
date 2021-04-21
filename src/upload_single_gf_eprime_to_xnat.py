@@ -56,7 +56,7 @@ eprime_txt = args.eprime_txt
 
 r = expr.match(os.path.basename(eprime_txt))
 if r is None:
-    print('   WARNING: Could not parse filename %s, skipping' % eprime_txt)
+    print(f'   WARNING: Could not parse filename {eprime_txt}. Skipping')
     sys.exit(0)
 
 session = r.group('session')
@@ -82,24 +82,27 @@ with dax.XnatUtils.get_interface() as xnat:
     scans = xnat.get_scans(project,session,subject)
 
     # Find scan(s) where scan_prefix matches scans['scan_type']
-    match = [x for x in scans if x['scan_type'].startswith(scan_prefix)]
+    match = [x for x in scans if x['scan_type'].startswith(scan_prefix) and x['quality']!='unusable']
     
-    # If length of matches isn't 1 warn and skip upload
-    if len(match) != 1:
-        print('   WARNING: Wrong number of scans matched (%d)' % len(match))
+    # Only proceed if exactly one match is found
+	if len(match) == 0:
+        print(f'   WARNING: No matching scan for {eprime_txt}')
+        sys.exit(0)
+    elif len(match) > 1:
+        print(f'   WARNING: Multiple matching scans found ({len(match)})')
         sys.exit(0)
     else:
         match = match[0]
-        print('   Found single scan %s matching \'%s\'' % (match['scan_id'],scan_prefix))
+        #print('   Found single scan %s matching \'%s\'' % (match['scan_id'],scan_prefix))
         
     # If scan has resource warn and skip upload unless overwrite
     rsrc = xnat.select_scan_resource(project,session,subject,match['scan_id'],'EPRIME_TXT')
     if rsrc.exists() and not (overwrite.lower()=='true'):
-        print('   WARNING: EPRIME_TXT resource already exists on XNAT, skipping')
+        print(f'   WARNING: EPRIME_TXT resource already exists on XNAT, skipping')
         sys.exit(0)
     else:
         if not rsrc.exists():
             rsrc.create()
         rsrc.put([eprime_txt],overwrite=True)
-        print('   Uploaded %s' % eprime_txt)
+        #print('   Uploaded %s' % eprime_txt)
 
