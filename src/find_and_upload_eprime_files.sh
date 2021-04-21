@@ -84,7 +84,7 @@ fi
 echo "Uploading from ${dir} to ${project}"
 
 # Create days option
-if [[ days == "all" ]]; then
+if [[ "${days}" == "all" ]]; then
 	daybit=""
 else
 	daybit="-mtime -$days"
@@ -93,7 +93,7 @@ fi
 # Find all relevant .txt files in dir and upload each one
 # https://stackoverflow.com/a/8677566
 while IFS= read -r -d $'\0' file; do
-	echo Uploading $file
+	echo Checking $file
 	"${upload_cmd}" --eprime_txt "${file}" --project "${project}" --overwrite "${overwrite}"
 done < <(find "${dir}" ${daybit} \( -name Oddball-*.txt -or -name SPT-*.txt -or -name WM-*.txt \) -print0)
 
