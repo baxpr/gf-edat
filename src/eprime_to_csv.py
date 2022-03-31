@@ -56,7 +56,8 @@ def main():
         parsed_frame = re.findall(expr_fields,frame[1])
         parsed_frame.append(('Level',frame[0]))
         parsed_frame = pandas.DataFrame(dict(parsed_frame),index=[0])
-        parsed_frames = parsed_frames.append(parsed_frame)
+        #parsed_frames = parsed_frames.append(parsed_frame)
+        parsed_frames = pandas.concat([parsed_frames,parsed_frame])
 
     # Sort by level for pretty
     parsed_frames = parsed_frames.sort_values(axis=0,by='Level')
