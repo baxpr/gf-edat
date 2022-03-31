@@ -44,7 +44,6 @@ case "${task}" in
 		;;
 esac
 
-
 # Convert E-Prime's .txt to a table format CSV file
 echo Converting to CSV: "${eprime_txt}"
 eprime_csv="${out_dir}"/eprime.csv
@@ -56,7 +55,6 @@ case "${task}" in
         ${src_dir}/eprime_to_csv_unsorted.py --outcsv "${eprime_csv}" "${eprime_txt}"
 		;;
 esac
-
 
 # Parse for the specific task (Oddball, WM, SPT)
 echo Parsing: "${eprime_csv}"
