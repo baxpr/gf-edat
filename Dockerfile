@@ -4,7 +4,7 @@ RUN apt-get -y update && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install wget unzip xvfb openjdk-8-jre python3-pip && \
     apt-get clean
 
-RUN pip3 install pandas
+RUN pip3 install pandas fpdf
 
 # Copy the pipeline code
 COPY src /opt/gf-edat/src
