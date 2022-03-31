@@ -36,7 +36,7 @@ done
 
 # Verify the specified task is in the list we can handle
 case "${task}" in
-	Oddball|OddballOld|SPT|WM)
+	Oddball|OddballOld|SPT|SPT-ESOP|WM)
 		;;
 	*)
 		echo Unknown task "${task}"
@@ -48,7 +48,15 @@ esac
 # Convert E-Prime's .txt to a table format CSV file
 echo Converting to CSV: "${eprime_txt}"
 eprime_csv="${out_dir}"/eprime.csv
-${src_dir}/eprime_to_csv.py --outcsv "${eprime_csv}" "${eprime_txt}"
+case "${task}" in
+	Oddball|OddballOld|SPT|WM)
+        ${src_dir}/eprime_to_csv.py --outcsv "${eprime_csv}" "${eprime_txt}"
+		;;
+	*)
+        ${src_dir}/eprime_to_csv_unsorted.py --outcsv "${eprime_csv}" "${eprime_txt}"
+		;;
+esac
+
 
 # Parse for the specific task (Oddball, WM, SPT)
 echo Parsing: "${eprime_csv}"
