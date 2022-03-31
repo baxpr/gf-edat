@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Initialize defaults (will be changed later if passed as options)
 export project=NO_PROJ

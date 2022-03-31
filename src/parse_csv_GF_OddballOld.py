@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Read CSV from eprime_to_csv.py and perform study-specific analysis
 # for GF Oddball task, old version

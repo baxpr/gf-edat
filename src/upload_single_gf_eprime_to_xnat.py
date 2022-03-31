@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Given the name of an E-PRIME .txt output file, parse the filename and upload the file
 # to the appropriate EPRIME_TXT resource on XNAT. Specific to the three GF tasks.
