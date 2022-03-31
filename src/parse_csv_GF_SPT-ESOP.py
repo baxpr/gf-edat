@@ -30,11 +30,21 @@ def main():
 
     # Times for each stimulus, removing rows with empty ImageType
     info = edat.loc[edat.ImageType.notna(),
-        ('ImageType','bbcolor','PresentPicture.OnsetTime','PresentPicture.RT','PresentPicture.ACC')]
+        (
+        'ImageType',
+        'PresentPicture.OnsetTime',
+        'PresentPicture.CRESP',
+        'PresentPicture.RT',
+        'PresentPicture.ACC',
+        )]
 
+    # Target vs foil
+    info.loc[:,'Target'] = 'Foil'
+    info.loc[info['PresentPicture.CRESP']==7,'Target'] = 'Target'
+    
     # Unique stimulus types, sorted
-    stims = info.loc[:,('ImageType','bbcolor')].drop_duplicates()
-    stims = stims.sort_values(by=['ImageType','bbcolor'],ignore_index=True)
+    stims = info.loc[:,('ImageType','Target')].drop_duplicates()
+    stims = stims.sort_values(by=['ImageType','Target'],ignore_index=True)
 
     # Initialize various things
     stims['Condition'] = [() for x in range(stims.index.size)]
@@ -53,10 +63,10 @@ def main():
     for s in range(stims.index.size):
 
         stim = stims.iloc[s,:]
-        inds = (info.ImageType==stim.ImageType) & (info.bbcolor==stim.bbcolor)
+        inds = (info.ImageType==stim.ImageType) & (info.Target==stim.Target)
         inds_correct = inds & (info.loc[:,'PresentPicture.ACC']==1)
 
-        stims.Condition[s] = (stim.ImageType + '_' + stim.bbcolor)
+        stims.Condition[s] = (stim.ImageType + '_' + stim.Target)
 
         stim_times = info.loc[inds,'PresentPicture.OnsetTime']
         stim_times = round( (stim_times - start_time) / 1000, 1)
@@ -69,7 +79,7 @@ def main():
         stims.PctAccuracy[s] = round( 100 * info.loc[inds,'PresentPicture.ACC'].mean(), 1 )
 
         # Only have RTs for target trials
-        if stim.bbcolor=='red':
+        if stim.Target=='Target':
             stims.RTms[s] = list(round(info.loc[inds,'PresentPicture.RT'], 0))
             stims.MeanCorrectRTms[s] = round(info.loc[inds_correct,'PresentPicture.RT'].mean(), 0)
             stims.MedianCorrectRTms[s] = round(info.loc[inds_correct,'PresentPicture.RT'].median(), 0)
